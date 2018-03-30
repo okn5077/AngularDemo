@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html ng-app="MemoryGame">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="../Scripts/jquery-3.0.0.min.js"></script>
+    <script src="../Scripts/angular.min.js"></script>
+    <script src="../Scripts/angular-animate.min.js"></script>
+</head>
+<body>
+    <style>
+        #GameTable {
+            width: 500px;
+        }
+
+            #GameTable .no-row {
+                display: inline-block !important;
+                padding: 10px;
+                position: relative;
+                width: 100px;
+                height: 100px;
+            }
+
+                #GameTable .no-row img {
+                    cursor: pointer;
+                    position: absolute;
+                    left: 0;
+                }
+
+                #GameTable .no-row img {
+                    animation: 1s swapShow;
+                }
+
+                    #GameTable .no-row img.ng-hide {
+                        animation: 0s swapHide;
+                    }
+
+        @keyframes swapShow {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes swapHide {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <div class="container h-100" id="GameTable" ng-controller="MemoryGameTable">
+        <div class="col-sm-3 no-row" ng-repeat="cellImage in cellImages">
+            <img class="default" src="../Images/plane-flight-icon.png" ng-click="swap($event, cellImage)" ng-show="!cellImage.show" ng-hide="cellImage.show" imageId="{{ cellImage.Id }}" />
+            <img ng-src="{{cellImage.source}}" ng-click="swap($event, cellImage)" ng-show="cellImage.show" ng-hide="!cellImage.show" imageId="{{ cellImage.Id }}" />
+        </div>
+        <button ng-click="restart()" class="btn-success" ng-show="gameOver">Restart</button>
+    </div>
+
+    <script>
+        var Images = [{ show: false, source: "../Images/Software-Music-icon.png", Id: 0 },
+        { show: false, source: "../Images/Apps-Gnome-Subtitles-C-icon.png", Id: 1 },
+        { show: false, source: "../Images/Apps-install-icon.png", Id: 2 },
+        { show: false, source: "../Images/arrow-back-icon.png", Id: 3 },
+        { show: false, source: "../Images/Firefox-icon.png", Id: 4 },
+        { show: false, source: "../Images/Folder-Music-icon.png", Id: 5 },
+        { show: false, source: "../Images/home-icon.png", Id: 6 },
+        { show: false, source: "../Images/science-chemistry-icon.png", Id: 7 },
+        { show: false, source: "../Images/Software-Music-icon.png", Id: 0 },
+        { show: false, source: "../Images/Apps-Gnome-Subtitles-C-icon.png", Id: 1 },
+        { show: false, source: "../Images/Apps-install-icon.png", Id: 2 },
+        { show: false, source: "../Images/arrow-back-icon.png", Id: 3 },
+        { show: false, source: "../Images/Firefox-icon.png", Id: 4 },
+        { show: false, source: "../Images/Folder-Music-icon.png", Id: 5 },
+        { show: false, source: "../Images/home-icon.png", Id: 6 },
+        { show: false, source: "../Images/science-chemistry-icon.png", Id: 7 }];
+
+        var memoryGameApp = angular.module("MemoryGame", ["ngAnimate"]);
+
+        var memoryGameTableController = memoryGameApp.controller("MemoryGameTable", function ($scope, $timeout) {
+            $scope.open1 = "";
+            $scope.open2 = "";
+
+            $scope.gameOver = false;
+
+            $scope.cellImages = shuffle(Images);
+
+            $scope.swap = function ($event, cellImage) {
+                debugger;
+                if ($scope.open1 && $scope.open2) {
+                    return;
+                }
+
+                $(".container").css("pointer-events", "none")
+
+                if (cellImage.show)
+                    cellImage.show = false;
+                else
+                    cellImage.show = true;
+
+                if (!$scope.open1) {
+                    $scope.open1 = cellImage.Id + 1;
+                }
+                else if ($scope.open1 && !$scope.open2) {
+                    $scope.open2 = cellImage.Id + 1;
+
+                    if ($scope.open1 == $scope.open2) {
+                        $timeout(function () {
+                            $("#GameTable").find("img[imageId=" + cellImage.Id + "]").hide();
+                        }, 1000);
+
+                        $scope.open1 = "";
+                        $scope.open2 = "";
+                        $("#GameTable").find("img[imageId=" + cellImage.Id + "]").attr("cellHidden", "hidden");
+                        if ($("#GameTable img[cellHidden]").length == 32)
+                            $scope.gameOver = true;
+                    }
+
+                    else {
+                        $timeout(function () {
+                            angular.forEach($scope.cellImages, function (cell) {
+                                if (cell.show)
+                                    cell.show = false;
+                            });
+                            $scope.open1 = "";
+                            $scope.open2 = "";
+                        }, 1000);
+                    }
+                }
+
+                $(".container").css("pointer-events", "all");
+            }
+
+            $scope.restart = function () {
+                $scope.cellImages = shuffle(Images);
+                $("#GameTable").find("img").css("display", "block");
+                angular.forEach($scope.cellImages, function (cell) {
+                    cell.show = false;
+                });
+                $scope.gameOver = false;
+                $("#GameTable").find("img").removeAttr("cellHidden");
+            };
+        });
+
+        function shuffle(a) {
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+    </script>
+</body>
+</html>

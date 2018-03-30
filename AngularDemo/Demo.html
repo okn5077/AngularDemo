@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-animate.min.js"></script>
+</head>
+
+<body>
+    <!--<div ng-app="test" ng-init="person={firstName:'okan',lastName:'fidan'}">
+
+        <input type="text" ng-model="person.firstName" />
+        <p ng-bind="person.firstName"></p>
+        <p>{{person.lastName}}</p>
+
+
+        <hr />
+
+        <input type="text" ng-model="first" />
+        <input type="text" ng-model="last" />
+        <p>{{first + " " +  last}}</p>
+    </div>
+    <script>
+        angular.module("test", []);
+    </script>
+
+    <hr />
+
+    <div ng-app="demo1App" ng-controller="demo1Controller">
+        <input ng-model="op1" type="number" />
+        <input ng-model="op2" type="number" />
+        <p>{{op1+op2}}</p>
+    </div>
+
+    <script>
+        var demo1App = angular.module('demo1App', []);
+        demo1App.controller('demo1Controller', function ($scope) {
+            $scope.op1 = 0;
+            $scope.op2 = 0;
+            $scope.sum = $scope.op1 + $scope.op2;
+        });
+
+    </script>
+
+    <hr />
+
+    <div ng-app="demo2App" ng-controller="demo2Controller">
+        <input ng-model="first" />
+        <input ng-model="last" />
+        <demo2-directive></demo2-directive>
+    </div>
+    <script>
+        var demo2App = angular.module("demo2App", []);
+        demo2App.controller("demo2Controller", function () {
+
+        });
+        demo2App.directive("demo2Directive", function () {
+            return {
+                scope: false,
+                restrict: "E",
+                template: "<div>{{ first }}  {{ last }}</div>"
+            }
+        });
+    </script>
+
+    <hr />
+
+    <style>
+
+        input.ng-valid-required {
+            background-color: green;
+            color: white;
+        }
+
+        input.ng-invalid {
+            background-color: red;
+        }
+    </style>
+    <form ng-app="test1" name="demoForm">
+        Email
+        <input ng-required="true" type="email" name="UserMail" ng-model="text" />
+        <span ng-show="demoForm.UserMail.$error.email">Not Valid mail</span>
+        {{demoForm.UserMail.$valid}}
+        {{demoForm.UserMail.$dirty}}
+        {{demoForm.UserMail.$touched}}
+        <br />
+        Id
+        <input type="number" name="UserId" ng-model="Id" />
+        <span ng-show="demoForm.UserId.$error.number">Invalid Id</span>
+    </form>
+
+    <script>
+        angular.module("test1", []);
+    </script>
+
+    <hr />
+
+
+    <div ng-app="demo3App" ng-controller="demo3Controller">
+        <input ng-model="school" />
+        <button ng-click="reset()">Reset School</button>
+        <p>
+            {{school}}
+        </p>
+    </div>
+    <script>
+        var demo3App = angular.module("demo3App", []);
+        demo3App.controller("demo3Controller", function ($scope) {
+            $scope.school = "default school";
+            $scope.reset = function () {
+                $scope.school = "";
+            }
+        });
+    </script>
+
+    <hr />
+
+
+    <div ng-app="demo4App" ng-controller="demo4Controller">
+        <input type="text" ng-model="newJob" />
+        <button ng-click="addJob()">Ekle</button>
+        <ul>
+            <li ng-repeat="job in jobs">
+                {{job.name + ' ' + job.date}}
+                <button ng-click="removeJob($event, job.name)">Sil</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        angular.module("demo4App", []).controller("demo4Controller", function ($scope) {
+            $scope.jobs = [{ name: "işe git", date: new Date() },
+            { name: "çalış", date: new Date() },
+            { name: "eve git", date: new Date() }];
+
+            $scope.addJob = function () {
+                if (!$scope.newJob)
+                    return;
+                $scope.jobs.push({ name: $scope.newJob, date: new Date() });
+                $scope.newJob = "";
+            };
+
+            $scope.removeJob = function ($event, name) {
+                $scope.jobs = $scope.jobs.filter(function (e) {
+                    return e.name !== name;
+                });
+                $event.target.parentNode.remove();
+            };
+        });
+    </script>
+
+    <hr />
+
+
+    <div ng-app="demo5App">
+        <h1>
+            {{name}}
+        </h1>
+
+        <div ng-controller="demo5Controller">
+            <p>{{name}}</p>
+        </div>
+    </div>
+
+    <script>
+        var demo5App = angular.module("demo5App", []);
+
+        demo5App.run(function ($rootScope) {
+            $rootScope.name = "okan";
+        });
+
+        demo5App.controller("demo5Controller", function ($scope) {
+            $scope.name = "fidan";
+        });
+    </script>
+
+    <hr />
+
+
+    <div ng-app="demo6App" ng-controller="demo6Controller">
+
+        <input ng-model="greater" type="number" />
+
+        <table>
+            <tr ng-repeat="number in numbers | customFormat : this">
+                <td>{{number}}</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <script>
+        var demo6App = angular.module("demo6App", []);
+
+        demo6App.filter("customFormat", function () {
+            return function (x, scope) {
+                return x.filter(function (element) {
+                    return element >= scope.greater;
+                });
+            }
+        });
+
+        demo6App.controller("demo6Controller", function ($scope) {
+            $scope.numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            $scope.greater = 0;
+        });
+    </script>
+
+    <hr />
+
+
+    <div ng-app="demo7App" ng-controller="demo7Controller">
+        <button style="color:white" ng-click="changeColor($event)">click me</button>
+    </div>
+
+    <script>
+        var app = angular.module("demo7App", []);
+        debugger;
+
+        app.service("colorChanger", function () {
+            this.changeColor = function (x) {
+                x.style.backgroundColor = "#" + parseInt((Math.random() * (999999 - 111111) + 111111));
+            };
+        });
+
+        app.controller("demo7Controller", function ($scope, colorChanger) {
+            $scope.changeColor = function ($event) {
+                colorChanger.changeColor($event.currentTarget);
+            };
+        });
+    </script>
+
+    <hr />-->
+    <!--<div ng-app="demo8App" ng-controller="demo8Controller">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+                <th>Country</th>
+            </tr>
+
+            <tr ng-repeat="obj in people">
+                <td>{{obj.Name}}</td>
+                <td>{{obj.City}}</td>
+                <td>{{obj.Country}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        var demo8App = angular.module("demo8App", []);
+
+        demo8App.controller("demo8Controller", function ($scope, $http) {
+            $http.get("https://www.w3schools.com/angular/customers.php").then(function (response) {
+                $scope.people = response.data.records;
+            }, function (respone) {
+                alert(response);
+            });
+        });
+    </script>
+
+    <hr />-->
+    <!--<div ng-app="demo9App" ng-controller="demo9Controller">
+        <select ng-model="selectedCity" ng-options="obj.name for obj in objects"></select>
+
+        <p>City: {{selectedCity.name}}</p>
+        <p>Id: {{selectedCity.Id}}</p>
+    </div>
+
+    <script>
+        var demo9App = angular.module("demo9App", []);
+        demo9App.controller("demo9Controller", function ($scope) {
+            $scope.objects = [{ name: "Yozgat", Id: 1 }, { name: "Ankara", Id: 2 }, { name: "İstanbul", Id: 3 }];
+            $scope.selectedCity = $scope.objects[0];
+        });
+    </script>
+
+    <hr />-->
+    <!--<div ng-app="demo10App" ng-init="vis = false" ng-controller="demo10Controller">
+        <p ng-show="vis">Merhaba</p>
+    </div>
+
+    <script>
+        var demo10App = angular.module("demo10App", []);
+        demo10App.controller("demo10Controller", function ($scope, $interval) {
+            $interval(function () {
+                var second = (new Date()).getSeconds();
+                $scope.vis = second % 2 == 0 ? true : false;
+            }, 1000);
+        });
+    </script>
+
+    <hr />-->
+    <!--<div ng-app="demo11App" ng-controller="demo11Controller">
+        <div ng-include="'htmls/test.html'"></div>
+    </div>
+
+    <script>
+        var demo11App = angular.module("demo11App", []);
+        demo11App.controller("demo11Controller", function ($scope) {
+            $scope.name = "Okan";
+        });
+    </script>
+
+    <hr />-->
+
+    <!--<style>
+        @keyframes someAnimation {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        div[ng-include] {
+            animation: 1s someAnimation infinite;
+        }
+    </style>
+
+    <div ng-app="demo11App" ng-controller="demo11Controller">
+        <div ng-include="'htmls/test.html'"></div>
+    </div>
+
+    <script>
+        var demo11App = angular.module("demo11App", []);
+        demo11App.controller("demo11Controller", function ($scope) {
+            $scope.name = "Okan";
+        });
+    </script>
+
+    <hr />-->
+
+</body>
+</html>
