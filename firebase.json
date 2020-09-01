@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "AngularDemo",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

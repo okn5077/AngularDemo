@@ -1,40 +1,45 @@
 ﻿<!DOCTYPE html>
 <html ng-app="MemoryGame">
+
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="../Scripts/jquery-3.0.0.min.js"></script>
-    <script src="../Scripts/angular.min.js"></script>
-    <script src="../Scripts/angular-animate.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="./Scripts/jquery-3.0.0.min.js"></script>
+    <script src="./Scripts/angular.min.js"></script>
+    <script src="./Scripts/angular-animate.min.js"></script>
+
+    <link rel="shortcut icon" href="./Images/plane-flight-icon.png" type="image/x-icon" />
 </head>
+
 <body>
     <style>
         #GameTable {
             width: 500px;
         }
 
-            #GameTable .no-row {
-                display: inline-block !important;
-                padding: 10px;
-                position: relative;
-                width: 100px;
-                height: 100px;
-            }
+        #GameTable .no-row {
+            display: inline-block !important;
+            padding: 10px;
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
 
-                #GameTable .no-row img {
-                    cursor: pointer;
-                    position: absolute;
-                    left: 0;
-                }
+        #GameTable .no-row img {
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+        }
 
-                #GameTable .no-row img {
-                    animation: 1s swapShow;
-                }
+        #GameTable .no-row img {
+            animation: 1s swapShow;
+        }
 
-                    #GameTable .no-row img.ng-hide {
-                        animation: 0s swapHide;
-                    }
+        #GameTable .no-row img.ng-hide {
+            animation: 0s swapHide;
+        }
 
         @keyframes swapShow {
             from {
@@ -59,29 +64,34 @@
 
     <div class="container h-100" id="GameTable" ng-controller="MemoryGameTable">
         <div class="col-sm-3 no-row" ng-repeat="cellImage in cellImages">
-            <img class="default" src="../Images/plane-flight-icon.png" ng-click="swap($event, cellImage)" ng-show="!cellImage.show" ng-hide="cellImage.show" imageId="{{ cellImage.Id }}" />
-            <img ng-src="{{cellImage.source}}" ng-click="swap($event, cellImage)" ng-show="cellImage.show" ng-hide="!cellImage.show" imageId="{{ cellImage.Id }}" />
+            <img class="default" src="./Images/plane-flight-icon.png" ng-click="swap($event, cellImage)"
+                ng-show="!cellImage.show" ng-hide="cellImage.show" imageId="{{ cellImage.Id }}" />
+            <img ng-src="{{cellImage.source}}" ng-click="swap($event, cellImage)" ng-show="cellImage.show"
+                ng-hide="!cellImage.show" imageId="{{ cellImage.Id }}" />
         </div>
         <button ng-click="restart()" class="btn-success" ng-show="gameOver">Restart</button>
     </div>
 
     <script>
-        var Images = [{ show: false, source: "../Images/Software-Music-icon.png", Id: 0 },
-        { show: false, source: "../Images/Apps-Gnome-Subtitles-C-icon.png", Id: 1 },
-        { show: false, source: "../Images/Apps-install-icon.png", Id: 2 },
-        { show: false, source: "../Images/arrow-back-icon.png", Id: 3 },
-        { show: false, source: "../Images/Firefox-icon.png", Id: 4 },
-        { show: false, source: "../Images/Folder-Music-icon.png", Id: 5 },
-        { show: false, source: "../Images/home-icon.png", Id: 6 },
-        { show: false, source: "../Images/science-chemistry-icon.png", Id: 7 },
-        { show: false, source: "../Images/Software-Music-icon.png", Id: 0 },
-        { show: false, source: "../Images/Apps-Gnome-Subtitles-C-icon.png", Id: 1 },
-        { show: false, source: "../Images/Apps-install-icon.png", Id: 2 },
-        { show: false, source: "../Images/arrow-back-icon.png", Id: 3 },
-        { show: false, source: "../Images/Firefox-icon.png", Id: 4 },
-        { show: false, source: "../Images/Folder-Music-icon.png", Id: 5 },
-        { show: false, source: "../Images/home-icon.png", Id: 6 },
-        { show: false, source: "../Images/science-chemistry-icon.png", Id: 7 }];
+        var Images = [{ show: false, source: "./Images/Software-Music-icon.png", Id: 0 },
+        { show: false, source: "./Images/Apps-Gnome-Subtitles-C-icon.png", Id: 1 },
+        { show: false, source: "./Images/Apps-install-icon.png", Id: 2 },
+        { show: false, source: "./Images/arrow-back-icon.png", Id: 3 },
+        { show: false, source: "./Images/Firefox-icon.png", Id: 4 },
+        { show: false, source: "./Images/Folder-Music-icon.png", Id: 5 },
+        { show: false, source: "./Images/home-icon.png", Id: 6 },
+        { show: false, source: "./Images/science-chemistry-icon.png", Id: 7 },
+        { show: false, source: "./Images/Software-Music-icon.png", Id: 0 },
+        { show: false, source: "./Images/Apps-Gnome-Subtitles-C-icon.png", Id: 1 },
+        { show: false, source: "./Images/Apps-install-icon.png", Id: 2 },
+        { show: false, source: "./Images/arrow-back-icon.png", Id: 3 },
+        { show: false, source: "./Images/Firefox-icon.png", Id: 4 },
+        { show: false, source: "./Images/Folder-Music-icon.png", Id: 5 },
+        { show: false, source: "./Images/home-icon.png", Id: 6 },
+        { show: false, source: "./Images/science-chemistry-icon.png", Id: 7 }];
+        Images.forEach((element, index) => {
+            element.index =index
+        });
 
         var memoryGameApp = angular.module("MemoryGame", ["ngAnimate"]);
 
@@ -107,12 +117,12 @@
                     cellImage.show = true;
 
                 if (!$scope.open1) {
-                    $scope.open1 = cellImage.Id + 1;
+                    $scope.open1 = { ...cellImage, Id: cellImage.Id  };
                 }
                 else if ($scope.open1 && !$scope.open2) {
-                    $scope.open2 = cellImage.Id + 1;
+                    $scope.open2 =  { ...cellImage, Id: cellImage.Id  };
 
-                    if ($scope.open1 == $scope.open2) {
+                    if ($scope.open1.Id === $scope.open2.Id && $scope.open1.index !== $scope.open2.index ) {
                         $timeout(function () {
                             $("#GameTable").find("img[imageId=" + cellImage.Id + "]").hide();
                         }, 1000);
@@ -159,4 +169,5 @@
         }
     </script>
 </body>
+
 </html>
